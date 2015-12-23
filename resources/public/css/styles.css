@@ -2,3 +2,57 @@
     max-width: 900px;
     margin: 50px auto;
 }
+
+.foo-appear {
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
+.foo-appear-active {
+  opacity: 1
+}
+
+.foo-enter {
+  opacity: 0;
+  transition: opacity 0.8s ease-out;
+}
+
+.foo-enter-active {
+  opacity: 1
+}
+
+.foo-leave {
+  opacity: 1;
+  transition: opacity 0.8s ease-out;
+}
+
+.foo-leave-active {
+  opacity: 0
+}
+
+.bar-appear {
+  color: red;
+  transition: color 0.8s ease-out;
+}
+
+.bar-appear-active {
+  color: black;
+}
+
+.bar-enter {
+  color: red;
+  transition: color 0.8s ease-out;
+}
+
+.bar-enter-active {
+  color: black
+}
+
+.bar-leave {
+  color: black;
+  transition: color 0.8s ease-out;
+}
+
+.bar-leave-active {
+  color: red
+}

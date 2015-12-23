@@ -6,9 +6,12 @@
 
   :dependencies [[org.clojure/clojure "1.7.0"]
                  [org.clojure/clojurescript "1.7.170"]
-                 [devcards "0.2.1"]
-                 [sablono "0.4.0"]
-                 [reagent "0.5.1"]]
+                 [devcards "0.2.1" :exclusions [cljsjs/react cljsjs/react-dom sablono]]
+                 [sablono "0.5.3" :exclusions [cljsjs/react cljsjs/react-dom cljsjs/react-dom-server]]
+                 [reagent "0.5.1" :exclusions [cljsjs/react cljsjs/react-dom cljsjs/react-dom-server]]
+                 [cljsjs/react-dom "0.14.3-1" :exclusions [cljsjs/react]]
+                 [cljsjs/react-dom-server "0.14.3-0" :exclusions [cljsjs/react]]
+                 [cljsjs/react-with-addons "0.14.3-0"]]
 
   :plugins [[lein-cljsbuild "1.1.1"]
             [lein-figwheel "0.5.0-1"]]

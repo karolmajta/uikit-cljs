@@ -20,10 +20,12 @@
 
     - `:collapsed` is a boolean deciding if content for this single data entry should be collapsed or not
       (defaults to `true`)
-    - `:title` will be contents of the header container for this data entry. It can be any proper sablono
+    - `:header` will be contents of the header container for this data entry. It can be any proper sablono
       form or reagent component.
     - `:content` will be contents of the content container for this data entry. It can be any proper sablono
       form or reagent component.
+    - `:header-transition` defines transition of header for this data entry (optional)
+    - `:content-transition` defines transition of content for this data entry (optional)
 
     Of course user is allowed to add any keys of his own, that would for example allow him to properly
     identify what was clicked (since `:content`, `:header`, `:collapsed` triple is not necessarily unique).
@@ -264,3 +266,43 @@
    ```"
 
    (r/as-element [accordion-control-from-children]))
+
+
+(def accordion-css-transition
+  (let [h1 "Animating opacity... (foo class)"
+        h2 "Animating color... (bar class)"
+        c1 [:div [:p "First paragraph..."] [:p "second paragraph"] [:p "Third paragraph..."]]
+        c2 [:div [:p "First paragraph..."] [:p "second paragraph"] [:p "Third paragraph..."]]
+        initial-accordion-state {1 {:id 1 :header h1 :content c1 :collapsed false :content-transition [:foo 1000]}
+                                 2 {:id 2 :header h2 :content c2 :collapsed true :content-transition [:bar 1000]}}
+        accordion-state (r/atom initial-accordion-state)
+        handle-click (fn [datum] (swap! accordion-state update-in [(:id datum) :collapsed] not))]
+    (fn []
+      (let [accordion-data (vals @accordion-state)]
+        [accordion {:data accordion-data
+                    :on-click handle-click}]))))
+
+(defcard accordion-css-transition-example
+  "Using transitions is quite nice with react's CSSTransitionGroup. Please note
+  that by binding transition data under `:content-transition` to accordion entries
+  rather than accordion itself it is possible to provide quite complex custom behaviors.
+  For example we can use different transitions for different accordion entries.
+  This would be not possible with JS version of UIKit, since there we could only define
+  a single `animate` property for all of accordion elements.
+  
+  ```clojure
+  (def accordion-css-transition
+    (let [h1 \"Animating opacity... (foo class)\"
+          h2 \"Animating color... (bar class)\"
+          c1 [:div [:p \"First paragraph...\"] [:p \"second paragraph\"] [:p \"Third paragraph...\"]]
+          c2 [:div [:p \"First paragraph...\"] [:p \"second paragraph\"] [:p \"Third paragraph...\"]]
+          initial-accordion-state {1 {:id 1 :header h1 :content c1 :collapsed false :content-transition [:foo 1000]}
+                                   2 {:id 2 :header h2 :content c2 :collapsed true :content-transition [:bar 1000]}}
+          accordion-state (r/atom initial-accordion-state)
+          handle-click (fn [datum] (swap! accordion-state update-in [(:id datum) :collapsed] not))]
+      (fn []
+        (let [accordion-data (vals @accordion-state)]
+          [accordion {:data accordion-data
+                      :on-click handle-click}]))))
+  ```"
+  (r/as-element [accordion-css-transition]))
