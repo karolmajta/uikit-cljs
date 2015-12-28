@@ -1,6 +1,6 @@
 (ns uikit.core
   (:require [reagent.core :as r]
-            [uikit.config :as config]
+            [rum.core :as rum]
             [uikit.components.accordion :refer [accordion]])
   (:require-macros [devcards.core :refer [defcard defcard-doc]]))
 
@@ -306,3 +306,30 @@
                       :on-click handle-click}]))))
   ```"
   (r/as-element [accordion-css-transition]))
+
+(rum/defcs rum-accordion < (rum/local {1 {:collapsed false} 2 {:collapsed true}})
+  [state]
+  (let [static-accordion-data {1 {:id 1 :header "Header 1" :content "Content 1"}
+                               2 {:id 2 :header "Header 2" :content "Content 2"}}
+        local (:rum/local state)
+        collapsed-state @local
+        accordion-data (into {} (map (fn [[k v]] [k (merge v (get collapsed-state k))]) static-accordion-data))]
+    (accordion {:data (vals accordion-data)
+                :on-click #(swap! local update-in [(:id %) :collapsed] not)})))
+
+(defcard rum-interop
+  "Since `accordion` is just a function that returns sablono (render function) it is trivial
+   to use it with rum.
+   
+   ```clojure
+   (rum/defcs rum-accordion < (rum/local {1 {:collapsed false} 2 {:collapsed true}})
+     [state]
+     (let [static-accordion-data {1 {:id 1 :header \"Header 1\" :content \"Content 1\"}
+                                  2 {:id 2 :header \"Header 2\" :content \"Content 2\"}}
+           local (:rum/local state)
+           collapsed-state @local
+           accordion-data (into {} (map (fn [[k v]] [k (merge v (get collapsed-state k))]) static-accordion-data))]
+       (accordion {:data (vals accordion-data)
+                   :on-click #(swap! local update-in [(:id %) :collapsed] not)})))
+   ```"
+  (rum-accordion))

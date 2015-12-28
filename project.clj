@@ -9,6 +9,7 @@
                  [devcards "0.2.1" :exclusions [cljsjs/react cljsjs/react-dom sablono]]
                  [sablono "0.5.3" :exclusions [cljsjs/react cljsjs/react-dom cljsjs/react-dom-server]]
                  [reagent "0.5.1" :exclusions [cljsjs/react cljsjs/react-dom cljsjs/react-dom-server]]
+                 [rum "0.6.0" :exclusions [cljsjs/react clsjs/react-dom sablono]]
                  [cljsjs/react-dom "0.14.3-1" :exclusions [cljsjs/react]]
                  [cljsjs/react-dom-server "0.14.3-0" :exclusions [cljsjs/react]]
                  [cljsjs/react-with-addons "0.14.3-0"]]
